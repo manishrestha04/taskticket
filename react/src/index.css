@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.navbar_wrapper a{
+    padding-left: 30px
+  }
+
+  .navbar_wrapper .nav-link {
+    color: white; /* Change text color */
+    text-decoration: none; /* Remove underline */
+    margin: 0 15px; /* Add some space between links */
+    font-weight: 500; /* Make the font slightly bolder */
+}
+
+.navbar_wrapper .nav-link:hover {
+    color: #00bcd4; /* Change color on hover */
+    text-decoration: none; /* Optional: underline on hover */
+}
+
+
+  body {
+    margin: 0;
+    padding-top: 70px; /* Ensures content is not hidden behind the fixed navbar */
+    min-width: 300px;
+    min-height: 100vh;
+    /*background-color: #242424; Add background color to match your theme */
+  }
+
+
+  .icon-hover-op {
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .icon-hover-op:hover {
+    color: blue; /* Change the color on hover */
+  }
+
+  .modal-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333; /* Change color as needed */
+}
+
+.modal-close-button:hover {
+    color: #ff0000; /* Example hover color */
+}
+
+
+.logout-item {
+  display: flex;
+  align-items: center; /* Align items vertically */
+  
+}
+
+.logout-icon {
+  margin-left: 5px; /* Add space between text and icon */
+}
+
+.ticket-detail-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px;
+}
+
+.ticket-info {
+  flex: 1; /* This will take the remaining space */
+  margin-right: 300px; /* Space between ticket info and comments */
+}
+
+.comments-section {
+  width: 700px; /* Fixed width for comments section */
+  border-left: 1px solid #ccc; /* Optional: border on left side */
+  padding-left: 10px; /* Padding for comments section */
+}
+
+.comment {
+  margin-bottom: 1px; /* Space between comments */
+  padding: 1px;
+}
+
+
+
+  
