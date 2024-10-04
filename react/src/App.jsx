@@ -7,6 +7,7 @@ import TicketList from "./views/TicketList";
 import TicketDetail from "./components/TicketDetail";
 import MyTickets from "./components/MyTickets";
 import ClosedTickets from "./components/ClosedTickets";
+import OpenedTickets from "./components/OpenedTickets";
 
 
 function App() {
@@ -54,6 +55,14 @@ function App() {
                         element={
                             <Protected>
                                 <TicketDetail />
+                            </Protected>
+                        }
+                    />
+                    <Route
+                        path="/openedtickets"
+                        element={
+                            <Protected>
+                                <OpenedTickets />
                             </Protected>
                         }
                     />

@@ -117,8 +117,8 @@ function TicketList() {
                             <th>Description</th>
                             <th>Image</th>
                             <th>Issued At</th>
-                            <th>Assigned To</th>
                             <th>Assigned By</th>
+                            <th>Assigned To</th>
                             <th>Status</th>
                             <th>Operation</th>
                         </tr>
@@ -145,8 +145,8 @@ function TicketList() {
                                         )}
                                     </td>
                                     <td>{new Date(item.created_at).toLocaleString()}</td>
-                                    <td>{item.assignto}</td>
                                     <td>{item.assignby}</td>
+                                    <td>{item.assignto}</td>
                                     <td>{item.status}</td>
                                     <td>
                                         <div
@@ -163,27 +163,25 @@ function TicketList() {
                                                             "user-info"
                                                         )
                                                     ).email && (
-                                                        <OverlayTrigger
-                                                        placement="top"
-                                                        overlay={<Tooltip id={`tooltip-accept-${item.id}`}>Accept Ticket</Tooltip>}
-                                                    >
-                                                        <GiTicket
-                                                            size={30}
-                                                            onClick={() => acceptTicket(item.id)}
-                                                            className="icon-hover-op"
-                                                        />
-                                                    </OverlayTrigger>
-                                                )}
-                                                <OverlayTrigger
-                                                    placement="top"
-                                                    overlay={<Tooltip id={`tooltip-view-${item.id}`}>View Ticket</Tooltip>}
-                                                >
-                                                    <FaEye
-                                                        size={25}
-                                                        onClick={() => navigate(`/ticket/${item.id}`)}
+                                                    <GiTicket
+                                                        size={30}
+                                                        onClick={() =>
+                                                            acceptTicket(
+                                                                item.id
+                                                            )
+                                                        }
                                                         className="icon-hover-op"
                                                     />
-                                                </OverlayTrigger>
+                                                )}
+                                            <FaEye
+                                                size={25}
+                                                onClick={() =>
+                                                    navigate(
+                                                        `/ticket/${item.id}`
+                                                    )
+                                                }
+                                                className="icon-hover-op"
+                                            />
                                         </div>
                                     </td>
                                 </tr>

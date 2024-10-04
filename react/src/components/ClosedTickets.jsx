@@ -17,7 +17,7 @@ function ClosedTickets() {
 
     async function getData() {
         const user = JSON.parse(localStorage.getItem("user-info"));
-        let result = await fetch("http://localhost:8000/api/listtickets");
+        let result = await fetch("http://localhost:8000/api/closed-tickets");
         result = await result.json();
 
         // Filter for closed tickets assigned to the logged-in user
@@ -66,8 +66,8 @@ function ClosedTickets() {
                             <th>TT-ID</th>
                             <th>Title</th>
                             <th>Description</th>
-                            <th>Assigned To</th>
                             <th>Assigned By</th>
+                            <th>Assigned To</th>
                             <th>Status</th>
                             <th>Closed At</th>
                             <th>Closed Remarks</th>
@@ -81,8 +81,8 @@ function ClosedTickets() {
                                     <td>{ticket.id}</td>
                                     <td>{ticket.title}</td>
                                     <td>{ticket.description}</td>
-                                    <td>{ticket.assignto}</td>
                                     <td>{ticket.assignby}</td>
+                                    <td>{ticket.assignto}</td>
                                     <td>{ticket.status}</td>
                                     <td>{new Date(ticket.updated_at).toLocaleString()}</td>
                                     <td>{ticket.remarks}</td>

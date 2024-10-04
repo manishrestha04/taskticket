@@ -1,4 +1,4 @@
-import  { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../views/Header";
 import { useNavigate, useParams } from "react-router-dom";
 import Modal from "react-modal";
@@ -99,7 +99,7 @@ function TicketDetail() {
                 },
                 body: JSON.stringify({
                     assignto,
-                    assignby: user.email,
+                    reassignedby: user.email,
                     status: "Reassigned",
                 }),
             }
@@ -194,185 +194,231 @@ function TicketDetail() {
             {ticket ? (
                 <div className="ticket-detail-container">
                     <div className="ticket-info">
-                    <h2>Ticket Detail</h2>
-                    <br />
-                    <p>
-                        <strong>Ticket ID:</strong> {ticket.id}
-                    </p>
-                    <p>
-                        <strong>Title:</strong> {ticket.title}
-                    </p>
-                    <p>
-                        <strong>Description:</strong> {ticket.description}
-                    </p>
-                    <p>
-                        <strong>Status:  </strong>
-                        <div
-                            style={{
-                                display: "inline-block",
-                                padding: "3px 7px",
-                                borderRadius: "5px",
-                                color: "white",
-                                backgroundColor:
-                                    ticket.status === "Closed"
-                                        ? "red"
-                                        : ticket.status === "Accepted"
-                                        ? "green"
-                                        : "blue", // Default color for Assigned or Reassigned
-                                fontWeight: "bold",
-                            }}
-                        >
-                            {ticket.status}
-                        </div>
-                    </p>
-                    <p>
-                        <strong>Assigned To:</strong> {ticket.assignto}
-                    </p>
-                    <p>
-                        <strong>Assigned By:</strong> {ticket.assignby}
-                    </p>
-                    <p style={{ display: "flex", alignItems: "center" }}>
-                        <strong style={{ marginRight: "8px" }}>
-                            View Image:
-                        </strong>
-                        {ticket.file_path ? (
-                        <FaImages
-                            size={27}
-                            onClick={() => openModal(ticket.file_path)}
-                            className="icon-hover-op"
-                        />
-                        ):(
-                            <span>No Image</span>
+                        <h2>Ticket Detail</h2>
+                        <br />
+                        <p>
+                            <strong>Ticket ID:</strong> {ticket.id}
+                        </p>
+                        <p>
+                            <strong>Title:</strong> {ticket.title}
+                        </p>
+                        <p>
+                            <strong>Description:</strong> {ticket.description}
+                        </p>
+                        <p>
+                            <strong>Status: </strong>
+                            <div
+                                style={{
+                                    display: "inline-block",
+                                    padding: "3px 7px",
+                                    borderRadius: "5px",
+                                    color: "white",
+                                    backgroundColor:
+                                        ticket.status === "Closed"
+                                            ? "red"
+                                            : ticket.status === "Accepted"
+                                            ? "green"
+                                            : "blue", // Default color for Assigned or Reassigned
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                {ticket.status}
+                            </div>
+                        </p>
+                        
+                        <p>
+                            <strong>Assigned By:</strong> {ticket.assignby}
+                        </p>
+                        <p>
+                            <strong>Assigned To:</strong> {ticket.assignto}
+                        </p>
+                        {
+                            ticket.reassignedby && (
+                                <p>
+                                    <strong>Reassigned By:</strong>{" "}
+                                    {ticket.reassignedby}
+                                    <span
+                                                style={{
+                                                    fontSize: "0.8em",
+                                                    color: "#999",
+                                                }}
+                                            >
+                                                {" "}
+                                                (
+                                                {new Date(
+                                                    ticket.updated_at
+                                                ).toLocaleString()}
+                                                )
+                                            </span>
+                                </p>
+                            )}
+
+                        <p style={{ display: "flex", alignItems: "center" }}>
+                            <strong style={{ marginRight: "8px" }}>
+                                View Image:
+                            </strong>
+                            {ticket.file_path ? (
+                                <FaImages
+                                    size={27}
+                                    onClick={() => openModal(ticket.file_path)}
+                                    className="icon-hover-op"
+                                />
+                            ) : (
+                                <span>No Image</span>
+                            )}
+                        </p>
+
+                        {((ticket.status === "Assigned" &&
+                            ticket.assignto === user.email) ||
+                            (ticket.status === "Reassigned" &&
+                                ticket.assignto === user.email)) && (
+                            <button
+                                onClick={acceptTicket}
+                                className="btn btn-success"
+                            >
+                                Accept Ticket
+                            </button>
                         )}
-                    </p>
 
-                    {((ticket.status === "Assigned" &&
-                        ticket.assignto === user.email) ||
-                        (ticket.status === "Reassigned" &&
-                            ticket.assignto === user.email)) && (
-                        <button
-                            onClick={acceptTicket}
-                            className="btn btn-success"
-                        >
-                            Accept Ticket
-                        </button>
-                    )}
-
-                    {ticket.status === "Accepted" &&
-                        ticket.assignto === user.email && (
-                            <div>
-                                <h5>Reassign Ticket</h5>
-                                <select
-                                    value={assignto}
-                                    onChange={(e) => {
-                                        setAssignto(e.target.value);
-                                        setErrors({ ...errors, assignto: "" });
-                                    }}
-                                    className="form-control"
-                                >
-                                    <option value="">Select User</option>
-                                    {users.map((user) => (
-                                        <option
-                                            key={user.id}
-                                            value={user.email}
-                                        >
-                                            {user.email}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.assignto && (
-                                    <div style={{ color: "red" }}>
-                                        {errors.assignto}
-                                    </div>
-                                )}
-                                <br />
-                                <div style={{ display: 'flex', gap: '10px' }}>
-                                <button
-                                    onClick={reassignTicket}
-                                    className="btn btn-primary"
-                                >
-                                    Reassign
-                                </button>
-                                {ticket.status === "Accepted" &&
-                                    ticket.assignto === user.email && (
-                                        <button
-                                            onClick={closeTicket}
-                                            className="btn btn-danger"
-                                        >
-                                            Close
-                                        </button>
+                        {ticket.status === "Accepted" &&
+                            ticket.assignto === user.email && (
+                                <div>
+                                    <h5>Reassign Ticket</h5>
+                                    <select
+                                        value={assignto}
+                                        onChange={(e) => {
+                                            setAssignto(e.target.value);
+                                            setErrors({
+                                                ...errors,
+                                                assignto: "",
+                                            });
+                                        }}
+                                        className="form-control"
+                                    >
+                                        <option value="">Select User</option>
+                                        {users.map((user) => (
+                                            <option
+                                                key={user.id}
+                                                value={user.email}
+                                            >
+                                                {user.email}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.assignto && (
+                                        <div style={{ color: "red" }}>
+                                            {errors.assignto}
+                                        </div>
                                     )}
+                                    <br />
+                                    <div
+                                        style={{ display: "flex", gap: "10px" }}
+                                    >
+                                        <button
+                                            onClick={reassignTicket}
+                                            className="btn btn-primary"
+                                        >
+                                            Reassign
+                                        </button>
+                                        {ticket.status === "Accepted" &&
+                                            ticket.assignto === user.email && (
+                                                <button
+                                                    onClick={closeTicket}
+                                                    className="btn btn-danger"
+                                                >
+                                                    Close
+                                                </button>
+                                            )}
                                     </div>
+                                </div>
+                            )}
+                        <br />
+                        {ticket.status === "Closed" && ticket.remarks && (
+                            <div>
+                                <h5>Closed Remarks</h5>
+                                <p>{ticket.remarks}</p>
                             </div>
                         )}
-                    <br />
-                    {ticket.status === "Closed" && ticket.remarks && (
-                        <div>
-                            <h5>Closed Remarks</h5>
-                            <p>{ticket.remarks}</p>
-                        </div>
-                    )}
 
-                    <br/>
-                    <h5>Comment Here:</h5>
-                    <div>
-                        <textarea
-                            value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
-                            className="form-control"
-                            placeholder="Add a comment..."
-                        />
                         <br />
-                        <button
-                            onClick={addComment}
-                            className="btn btn-secondary"
-                        >
-                            Add Comment
-                        </button>
-                    </div>
-                    <br />
+                        <h5>Comment Here:</h5>
+                        <div>
+                            <textarea
+                                value={newComment}
+                                onChange={(e) => setNewComment(e.target.value)}
+                                className="form-control"
+                                placeholder="Add a comment..."
+                            />
+                            <br />
+                            <button
+                                onClick={addComment}
+                                className="btn btn-secondary"
+                            >
+                                Add Comment
+                            </button>
+                        </div>
+                        <br />
                     </div>
                     <div className="comments-section">
-    <h5>Comments:</h5><br/>
-    <div>
-        {comments.length > 0 ? (
-            [...comments] // Create a shallow copy of the comments array
-                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort by date in descending order
-                .map((comment) => (
-                    <div key={comment.id} className="comment">
-                        <strong>{comment.commented_by}:</strong>{" "}
-                        {comment.comment} 
-                        <span style={{ fontSize: '0.8em', color: '#999' }}>
-                            {" "}({new Date(comment.created_at).toLocaleString()})
-                        </span>
-                        <hr
-                            style={{
-                                border: "1px solid grey",
-                                margin: "10px 0",
-                            }}
-                        />
+                        <h5>Comments:</h5>
+                        <br />
+                        <div>
+                            {comments.length > 0 ? (
+                                [...comments] // Create a shallow copy of the comments array
+                                    .sort(
+                                        (a, b) =>
+                                            new Date(b.created_at) -
+                                            new Date(a.created_at)
+                                    ) // Sort by date in descending order
+                                    .map((comment) => (
+                                        <div
+                                            key={comment.id}
+                                            className="comment"
+                                        >
+                                            <strong>
+                                                {comment.commented_by}:
+                                            </strong>{" "}
+                                            {comment.comment}
+                                            <span
+                                                style={{
+                                                    fontSize: "0.8em",
+                                                    color: "#999",
+                                                }}
+                                            >
+                                                {" "}
+                                                (
+                                                {new Date(
+                                                    comment.created_at
+                                                ).toLocaleString()}
+                                                )
+                                            </span>
+                                            <hr
+                                                style={{
+                                                    border: "1px solid grey",
+                                                    margin: "10px 0",
+                                                }}
+                                            />
+                                        </div>
+                                    ))
+                            ) : (
+                                <p>No comments yet.</p>
+                            )}
+                        </div>
                     </div>
-                ))
-        ) : (
-            <p>No comments yet.</p>
-        )}
-    </div>
-</div>
-
                 </div>
             ) : (
                 <p>Loading...</p>
             )}
 
-            <Modal
+<Modal
                 isOpen={isModalOpen}
                 onRequestClose={closeModal}
                 appElement={document.getElementById("root")}
                 style={{
                     content: {
-                        maxWidth: '550px', // Set maximum width for the modal
+                        maxWidth: '850px', // Set maximum width for the modal
                         margin: 'auto', // Center the modal
-                        padding: '20px', // Add padding inside the modal
+                        padding: '30px', // Add padding inside the modal
                         borderRadius: '15px', // Optional: Rounded corners
                         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)', // Optional: Shadow for depth
                     },

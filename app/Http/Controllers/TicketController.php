@@ -34,7 +34,8 @@ try{
 
     function listtickets()
     {
-        return Ticket::all();
+        $tickets = Ticket::orderBy('created_at', 'desc')->get();
+        return response()->json($tickets);
     }
 
 
@@ -71,7 +72,7 @@ public function reassignTicket(Request $request, $id)
     $ticket = Ticket::find($id);
     if ($ticket) {
         $ticket->assignto = $request->assignto;
-        $ticket->assignby = $request->assignby; // Update the user performing the reassignment
+        $ticket->reassignedby = $request->reassignedby; // Update the user performing the reassignment
         $ticket->status = $request->status; // Update status to "Reassigned"
         $ticket->save();
         return response()->json(['message' => 'Ticket reassigned successfully'], 200);
@@ -96,9 +97,12 @@ public function closeTicket(Request $request, $ticketId)
 public function getClosedTickets()
 {
     // Retrieve all tickets with status 'Closed'
-    $closedTickets = Ticket::where('status', 'Closed')->get();
-
+    $closedTickets = Ticket::where('status', 'Closed')
+        ->orderBy('updated_at', 'desc')
+        ->get();
     return response()->json($closedTickets);
+    
 }
+
 
 }

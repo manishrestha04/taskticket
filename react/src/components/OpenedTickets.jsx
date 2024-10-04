@@ -9,7 +9,7 @@ import { FaImages } from "react-icons/fa";
 import { FaWindowClose } from "react-icons/fa";
 //import { Link } from "react-router-dom";
 
-function MyTickets() {
+function OpenedTickets() {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [searchKey, setSearchKey] = useState("");
@@ -26,11 +26,11 @@ function MyTickets() {
         let result = await fetch("http://localhost:8000/api/listtickets");
         result = await result.json();
 
-        const myTickets = result.filter(
-            (ticket) => ticket.assignto === user.email && ticket.status !=="Closed"
+        const openedTickets = result.filter(
+            (ticket) => ticket.assignby === user.email
         );
-        setData(myTickets);
-        setFilteredData(myTickets); // Initialize filtered data with all products
+        setData(openedTickets);
+        setFilteredData(openedTickets); // Initialize filtered data with all products
     }
 
     // Function to handle search/filter logic
@@ -101,7 +101,7 @@ function MyTickets() {
         <div>
             <Header />
             <div className="col-sm-8 offset-sm-2">
-                <h2>My Tickets</h2>
+                <h2>Tickets Opened By Me</h2>
                 <br />
                 {/* Search Bar */}
                 <input
@@ -161,7 +161,7 @@ function MyTickets() {
                                                 alignItems: "center",
                                             }}
                                         >
-                                             {item.status !== "Accepted" && item.assignto === JSON.parse(localStorage.getItem("user-info")).email && (
+                                             {item.status !== "Accepted" && item.status !=="Closed" && item.assignto === JSON.parse(localStorage.getItem("user-info")).email && (
                                             <GiTicket
                                                 size={30}
                                                 onClick={() =>
@@ -232,4 +232,4 @@ function MyTickets() {
     );
 }
 
-export default MyTickets;
+export default OpenedTickets;

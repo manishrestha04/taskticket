@@ -30,6 +30,9 @@ function Header() {
                             <Link className="nav-link" to="/closed-tickets">
                                 My Closed Tickets
                             </Link>
+                            <Link className="nav-link" to="/openedtickets">
+                                Ticket Opened By Me
+                            </Link>
                         </>
                     ) : (
                         <>
