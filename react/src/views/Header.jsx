@@ -33,6 +33,9 @@ function Header() {
                             <Link className="nav-link" to="/openedtickets">
                                 Ticket Opened By Me
                             </Link>
+                            <Link className="nav-link" to="/userlist">
+                                User List
+                            </Link>
                         </>
                     ) : (
                         <>

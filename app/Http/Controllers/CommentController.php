@@ -23,7 +23,7 @@ class CommentController extends Controller
 
         $comment = new Comment();
         $comment->ticket_id = $ticketId;
-        $comment->comment = $request->comment;
+        $comment->comment = $request->comment;  
         $comment->commented_by = $request->commentedBy;
         $comment->save();
 

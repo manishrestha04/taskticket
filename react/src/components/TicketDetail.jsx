@@ -336,7 +336,21 @@ function TicketDetail() {
                         {ticket.status === "Closed" && ticket.remarks && (
                             <div>
                                 <h5>Closed Remarks</h5>
-                                <p>{ticket.remarks}</p>
+                                <p>{ticket.remarks}
+                                <span
+                                                style={{
+                                                    fontSize: "0.8em",
+                                                    color: "#999",
+                                                }}
+                                            >
+                                                {" "}
+                                                (
+                                                {new Date(
+                                                    ticket.updated_at
+                                                ).toLocaleString()}
+                                                )
+                                            </span>
+                                            </p>
                             </div>
                         )}
 
